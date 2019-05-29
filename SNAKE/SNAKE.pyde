@@ -80,11 +80,15 @@ def create_food():
         food_x = random.randint(1,28)*30
         food_y = random.randint(1,28)*30
         notOverlappingSnake = False #Checks if food overlaps with snake
+        notOverlappingObstacle = True #Checks if food overlaps with obstacle
         for i in range(snake_length):
             if food_x != positions[0][i] or food_y != positions[1][i]:
                 notOverlappingSnake = True
+        if obstacle_x <= food_x and food_x <= (obstacle_x + obstacle_w):
+            if obstacle_y <= food_y and food_y <= (obstacle_y + obstacle_h):
+                notOverlappingObstacle = False
         #while loop continues to run until food was created that does not overlap
-        if notOverlappingSnake:
+        if notOverlappingSnake and notOverlappingObstacle:
             break 
             
     fill(0,255,0)
