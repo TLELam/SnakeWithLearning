@@ -76,8 +76,17 @@ def food():
         
 def create_food():
     global food_exists, food_x, food_y
-    food_x = random.randint(1,28)*30
-    food_y = random.randint(1,28)*30
+    while True:
+        food_x = random.randint(1,28)*30
+        food_y = random.randint(1,28)*30
+        notOverlappingSnake = False #Checks if food overlaps with snake
+        for i in range(snake_length):
+            if food_x != positions[0][i] or food_y != positions[1][i]:
+                notOverlappingSnake = True
+        #while loop continues to run until food was created that does not overlap
+        if notOverlappingSnake:
+            break 
+            
     fill(0,255,0)
     rect(food_x, food_y, 30, 30)
     food_exists = True
