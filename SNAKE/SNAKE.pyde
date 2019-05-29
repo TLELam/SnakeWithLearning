@@ -5,6 +5,8 @@ def setup():
     size(900,900)
     frameRate(8)
 
+obstacle_counter
+obstacle_exists = False
 food_exists = False
 snake_length = 1
 positions = [[300],[300]]
@@ -15,6 +17,35 @@ paused = False
 restarting = True
 countdown_timer = 3
 
+def game_loop():
+    global obstacle_exists, food_exists, snake_length, positions, dead, death_countdown, shrink, paused, restarting, countdown_timer
+    background(255)
+    obstacle()
+    food()
+    display_snake()
+    if restarting:
+        a.speed = 0
+        fill(0)
+        textSize(40)
+        text(countdown_timer,445,430)
+        time.sleep(1)
+        if countdown_timer == 0:
+            restarting = False
+            a.speed = 30
+        countdown_timer -= 1
+    strokeWeight(5)
+    line(0,0,900,0)
+    line(900,0,900,990)
+    line(900,900,0,900)
+    line(0,900,0,0)
+    strokeWeight(1)
+    fill(0)
+    text(snake_length, 840, 40)
+    a.drive()
+    if paused:
+        fill(230,0,0)
+        text("Paused",400,420)
+        
 def restart():
     global food_exists, snake_length, positions, dead, death_countdown, shrink, paused, restarting, countdown_timer
     food_exists = False
@@ -50,6 +81,29 @@ def create_food():
     fill(0,255,0)
     rect(food_x, food_y, 30, 30)
     food_exists = True
+    
+def obstacle():
+    global obstacle_exists, obstacle_x, obstacle_y, obstacle_w, obstacle_h, dead, snake_length
+    if obstacle_exists:
+        fill(255,0,0)
+        rect(obstacle_x, obstacle_y, obstacle_w, obstacle_h)
+    else:
+        if dead != True:
+            create_obstacle()
+    if obstacle_x <= a.x < obstacle_x + obstacle_w and obstacle_y <= a.y < obstacle_y + obstacle_h:
+        a.speed = 0
+        dead = True
+        obstacle_exists = False
+
+def create_obstacle():
+    global obstacle_exists, obstacle_x, obstacle_y, obstacle_h, obstacle_w
+    obstacle_x = random.randint(1,28)*30
+    obstacle_y = random.randint(1,28)*30
+    obstacle_h = random.randint(1,5)*30
+    obstacle_w = random.randint(1,5)*30
+    fill(0,255,0)
+    rect(obstacle_x, obstacle_y, obstacle_w, obstacle_h)
+    obstacle_exists = True
     
 def display_snake():
     global positions, snake_length, shrink, dead, death_countdown, paused
@@ -98,6 +152,7 @@ class Snake_head():
         if self.y >= height-30 or self.y <= 0:
             self.speed = 0
             dead = True
+            
         if paused == False:    
             positions[0].append(self.x)
             positions[1].append(self.y)
@@ -135,7 +190,7 @@ def keyPressed():
         
 def draw():
     global shrink, restarting, countdown_timer
-    background(255)
+    '''background(255)
     food()
     display_snake()
     if restarting:
@@ -159,6 +214,8 @@ def draw():
     a.drive()
     if paused:
         fill(230,0,0)
-        text("Paused",400,420)
+        text("Paused",400,420)'''
+    
+    game_loop()
         
     
