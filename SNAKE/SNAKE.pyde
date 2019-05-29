@@ -5,7 +5,7 @@ def setup():
     size(900,900)
     frameRate(8)
 
-obstacle_counter
+obstacle_count = 1
 obstacle_exists = False
 food_exists = False
 snake_length = 1
