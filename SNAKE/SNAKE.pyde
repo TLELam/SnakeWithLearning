@@ -59,7 +59,7 @@ def display_snake():
         fill(60,180,180)
         if dead:
             if death_countdown > snake_length:
-                snake_legnth = 1
+                snake_length = 1
                 shrink = shrink*0.7
                 rect(positions[0][0]+(shrink-shrink*15)+10.5, positions[1][0]+(shrink-shrink*15)+10.5, shrink*30, shrink*30)
             else:
