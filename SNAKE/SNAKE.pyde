@@ -5,7 +5,7 @@ def setup():
     size(900,900)
     frameRate(8)
 
-obstacle_counter = 10
+obstacle_counter = 1
 obstacles = 1
 obstacle_exists = False
 food_exists = False
@@ -51,7 +51,7 @@ def game_loop():
 def restart():
     global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, death_countdown, shrink, paused, restarting, countdown_timer
     obstacles = 1
-    obstacle_counter =10
+    obstacle_counter =1
     food_exists = False
     snake_length = 1
     obstacle_positions = [[(random.randint(10,20)*30)],[(random.randint(10,20)*30)],[(random.randint(1,5)*30)],[(random.randint(1,5)*30)]]
@@ -61,11 +61,11 @@ def restart():
     shrink = 1
     paused = False
     restarting = True
-    countdown_timer = random.randint(1,4)
+    countdown_timer = 3
     a.x = snake_positions[0][0]
     a.y = snake_positions[1][0]
     a.speed = 30
-    a.direction = 1
+    a.direction = random.randint(1,4)
     a.turned_this_frame = False
     
 def food():
@@ -105,7 +105,8 @@ def create_food():
 def obstacle():
     global obstacle_exists, obstacle_x, obstacle_y, obstacle_w, obstacle_h, dead, obstacles, obstacle_counter, obstacle_positions
     if obstacles == obstacle_counter:
-        a.speed = 30
+        if dead == False and paused == False:
+            a.speed = 30
         for i in range (0, obstacles):
             fill(255,0,0)
             rect(obstacle_positions[0][i-1], obstacle_positions[1][i-1], obstacle_positions[2][i-1], obstacle_positions[3][i-1])
