@@ -20,6 +20,44 @@ paused = False
 restarting = True
 countdown_timer = 3
 
+
+
+
+def trivia():
+    global death_countdown
+    if death_countdown < 5:
+        num1 = random.randint(1,11)
+        num2 = random.randint(1,11)
+    else:
+        num1 = random.randint(10,100)
+        num2 = random.randint(10,100)
+    question = str(num1) + "+" + str(num2)
+    text (question, 50, 50)
+    answer = num1 + num2
+    answer = str(answer)
+    ans_location = random.randint (1,4)
+    count = 1
+    for i in range (0,3):
+        y = 150
+        if count == ans_location:
+            answer_y = y
+            fill (0, 0, 700)
+            rect (50, y, 50, 50)
+            text (answer, 75, 65)
+        else:
+            rand = random.randint(0,10)
+            rand = str(rand)
+            fill (0, 0, 700)
+            rect (50, y, 50, 50)
+            text (rand, 75, 65)
+        y += 100
+    if mousePressed == True:
+        if 50 < mouseX < 50 + 50 and ans_location < mouseY < ans_location + 50:
+            fill (225, 181, 197)
+            rect (50, ans_location, 50, 50)
+            text ("Thats True", 75, 65)
+    
+
 def game_loop():
     global obstacles, obstacle_counter, obstacle_exists, food_exists, snake_length, obstacle_positions, snake_positions, dead, death_countdown, shrink, paused, restarting, countdown_timer
     background(255)
@@ -147,6 +185,8 @@ def display_snake():
     global positions, snake_length, shrink, dead, death_countdown, paused
     if dead:
         death_countdown += 1
+        trivia()
+            #dead = False
     for i in range(0, snake_length):
         fill(60,180,180)
         if dead:
