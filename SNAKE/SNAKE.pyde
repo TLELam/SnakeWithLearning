@@ -5,7 +5,7 @@ def setup():
     size(900,900)
     frameRate(8)
 
-obstacle_counter = 1
+obstacle_counter = 10
 obstacles = 1
 obstacle_exists = False
 food_exists = False
@@ -33,7 +33,7 @@ def game_loop():
         time.sleep(1)
         if countdown_timer == 0:
             restarting = False
-            a.speed = 30
+            #a.speed = 30
         countdown_timer -= 1
     strokeWeight(5)
     line(0,0,900,0)
@@ -51,7 +51,7 @@ def game_loop():
 def restart():
     global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, death_countdown, shrink, paused, restarting, countdown_timer
     obstacles = 1
-    obstacle_counter = 1
+    obstacle_counter =10
     food_exists = False
     snake_length = 1
     obstacle_positions = [[(random.randint(10,20)*30)],[(random.randint(10,20)*30)],[(random.randint(1,5)*30)],[(random.randint(1,5)*30)]]
@@ -87,11 +87,13 @@ def create_food():
         notOverlappingSnake = False #Checks if food overlaps with snake
         notOverlappingObstacle = True #Checks if food overlaps with obstacle
         for i in range(snake_length):
-            if food_x != positions[0][i] or food_y != positions[1][i]:
+            if food_x != snake_positions[0][i] or food_y != snake_positions[1][i]:
                 notOverlappingSnake = True
-        if obstacle_x <= food_x and food_x <= (obstacle_x + obstacle_w):
-            if obstacle_y <= food_y and food_y <= (obstacle_y + obstacle_h):
-                notOverlappingObstacle = False
+        
+        for i in range(obstacles):
+            if obstacle_positions[0][i-1] <= food_x and food_x <= (obstacle_positions[0][i-1] + obstacle_positions[2][i-1]):
+                if obstacle_positions[1][i-1] <= food_y and food_y <= (obstacle_positions[1][i-1] + obstacle_positions[3][i-1]):
+                    notOverlappingObstacle = False
         #while loop continues to run until food was created that does not overlap
         if notOverlappingSnake and notOverlappingObstacle:
             break 
@@ -103,6 +105,7 @@ def create_food():
 def obstacle():
     global obstacle_exists, obstacle_x, obstacle_y, obstacle_w, obstacle_h, dead, obstacles, obstacle_counter, obstacle_positions
     if obstacles == obstacle_counter:
+        a.speed = 30
         for i in range (0, obstacles):
             fill(255,0,0)
             rect(obstacle_positions[0][i-1], obstacle_positions[1][i-1], obstacle_positions[2][i-1], obstacle_positions[3][i-1])
