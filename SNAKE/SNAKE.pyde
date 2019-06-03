@@ -24,38 +24,62 @@ countdown_timer = 3
 
 
 def trivia():
-    global death_countdown
-    if death_countdown < 5:
-        num1 = random.randint(1,11)
-        num2 = random.randint(1,11)
-    else:
-        num1 = random.randint(10,100)
-        num2 = random.randint(10,100)
-    question = str(num1) + "+" + str(num2)
-    text (question, 50, 50)
-    answer = num1 + num2
-    answer = str(answer)
-    ans_location = random.randint (1,4)
-    count = 1
-    for i in range (0,3):
-        y = 150
-        if count == ans_location:
-            answer_y = y
-            fill (0, 0, 700)
-            rect (50, y, 50, 50)
-            text (answer, 75, 65)
+    global death_countdown, dead
+    if dead == True:
+        if death_countdown < 5:
+            num1 = random.randint(1,11)
+            num2 = random.randint(1,11)
         else:
-            rand = random.randint(0,10)
-            rand = str(rand)
-            fill (0, 0, 700)
-            rect (50, y, 50, 50)
-            text (rand, 75, 65)
-        y += 100
-    if mousePressed == True:
-        if 50 < mouseX < 50 + 50 and ans_location < mouseY < ans_location + 50:
-            fill (225, 181, 197)
-            rect (50, ans_location, 50, 50)
-            text ("Thats True", 75, 65)
+            num1 = random.randint(10,100)
+            num2 = random.randint(10,100)
+        question = str(num1) + "+" + str(num2)
+        text (question, 50, 50)
+        answer = num1 + num2
+        answer = str(answer)
+        ans_location = random.randint (1,4)
+        count = 1
+        count_rand = 0
+        y = 150
+        y1 = 0
+        y2 = 0
+        for i in range (0,3):
+            if count == ans_location:
+                answer_y = y
+                fill (0, 0, 700)
+                rect (50, y, 50, 50)
+                text (answer, 75, 65)
+            else:
+                if count_rand == 1:
+                    rand = random.randint(0,10)
+                    rand = str(rand)
+                    y1 = y
+                    fill (0, 0, 700)
+                    rect (50, y1, 50, 50)
+                    text (rand, 75, 65)
+                    rand_count += 1
+                elif count_rand == 2:
+                    rand = random.randint(0,10)
+                    rand = str(rand)
+                    y2 = y
+                    fill (0, 0, 700)
+                    rect (50, y2, 50, 50)
+                    text (rand, 75, 65)
+                    rand_count += 1
+            y += 100
+        if mousePressed == True:
+            if 50 < mouseX < 50 + 50 and ans_location < mouseY < ans_location + 50:
+                fill (225, 181, 197)
+                rect (50, ans_location, 50, 50)
+                text ("Thats True", 75, 65)
+                trivia = True
+            elif 50 < mouseX < 50 + 50 and y1 < mouseY < y1 + 50:
+                fill (225, 181, 197)
+                rect (50, y1, 50, 50)
+                text (False, 75, 65)
+            elif 50 < mouseX < 50 + 50 and y2 < mouseY < y2 + 50:
+                fill (225, 181, 197)
+                rect (50, y1, 50, 50)
+                text (False, 75, 65)
     
 
 def game_loop():
@@ -186,7 +210,6 @@ def display_snake():
     if dead:
         death_countdown += 1
         trivia()
-            #dead = False
     for i in range(0, snake_length):
         fill(60,180,180)
         if dead:
@@ -244,6 +267,7 @@ class Snake_head():
 
 a = Snake_head()
 
+
 def keyPressed():
     global turns, paused
     #Checking which key was pressed
@@ -286,5 +310,4 @@ def save_high_scores():
 def draw():
     global shrink, restarting, countdown_timer
     game_loop()
-        
-    
+   
