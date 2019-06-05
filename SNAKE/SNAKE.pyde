@@ -115,6 +115,12 @@ def trivia():
 def game_loop():
     global obstacles, obstacle_counter, obstacle_exists, food_exists, snake_length, obstacle_positions, snake_positions, dead, death_countdown, shrink, paused, restarting, countdown_timer
     background(255)
+    strokeWeight(60)
+    line(0,0,900,0)
+    line(900,0,900,990)
+    line(900,900,0,900)
+    line(0,900,0,0)
+    strokeWeight(1)
     obstacle()
     food()
     display_snake()
@@ -130,14 +136,8 @@ def game_loop():
             restarting = False
             #a.speed = 30
         countdown_timer -= 1
-    strokeWeight(5)
-    line(0,0,900,0)
-    line(900,0,900,990)
-    line(900,900,0,900)
-    line(0,900,0,0)
-    strokeWeight(1)
     fill(0)
-    text(snake_length, 840, 40)
+    text(snake_length, 810, 80)
     a.drive()
     if paused:
         fill(230,0,0)
@@ -290,10 +290,10 @@ class Snake_head():
                 dead = True
                 self.speed = 0
         
-        if self.x >= width-30 or self.x <= 0:
+        if (self.x >= width-30 and self.direction == 2) or (self.x < 30 and self.direction == 4):
             self.speed = 0
             dead = True
-        if self.y >= height-30 or self.y <= 0:
+        if (self.y >= height-30 and self.direction == 3) or (self.y < 30 and self.direction == 1):
             self.speed = 0
             dead = True
             
