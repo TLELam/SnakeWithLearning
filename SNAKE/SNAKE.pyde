@@ -21,7 +21,7 @@ shrink = 1
 paused = False
 restarting = True
 countdown_timer = 3
-
+death_count = 0
 
 
 
@@ -34,6 +34,24 @@ def trivia():
         else:
             num1 = random.randint(10,100)
             num2 = random.randint(10,100)
+            '''
+        if selection == addition:
+            question = str(num1) + "+" + str(num2)
+            answer = num1 + num2
+            answer = str(answer)
+        elif selection == subtraction:
+            question = str (num1) + "-" + str(num2)
+            answer = num1 - num2
+            answer = str(answer)
+        elif selection == multiplication:
+            question = str(num1) + "x" + str(num2)
+            answer = num1 * num2
+            answer = str(answer)
+        elif selection == division:
+            question = str(num1) + "/" + str(num2)
+            answer = num1 / num2
+            answer = str(answer)
+            '''
         question = str(num1) + "+" + str(num2)
         text (question, 50, 50)
         answer = num1 + num2
@@ -49,39 +67,49 @@ def trivia():
                 answer_y = y
                 fill (0, 0, 700)
                 rect (50, y, 50, 50)
-                text (answer, 75, 65)
+                text (answer, 50, answer_y)
             else:
                 if count_rand == 1:
-                    rand = random.randint(0,10)
+                    rand = random.randint(0,101)
                     rand = str(rand)
+                    if rand == answer:
+                        while rand == answer:
+                            rand = random.randint(0,101)
+                            rand = str(rand)
                     y1 = y
                     fill (0, 0, 700)
                     rect (50, y1, 50, 50)
-                    text (rand, 75, 65)
-                    rand_count += 1
+                    text (rand, 50, y1)
+
                 elif count_rand == 2:
-                    rand = random.randint(0,10)
+                    rand = random.randint(0,101)
                     rand = str(rand)
+                    if rand == answer:
+                        while rand == answer:
+                            rand = random.randint(0,101)
+                            rand = str(rand)
                     y2 = y
                     fill (0, 0, 700)
                     rect (50, y2, 50, 50)
-                    text (rand, 75, 65)
-                    rand_count += 1
+                    text (rand, 50, y2)
+                count_rand += 1
             y += 100
         if mousePressed == True:
             if 50 < mouseX < 50 + 50 and ans_location < mouseY < ans_location + 50:
                 fill (225, 181, 197)
                 rect (50, ans_location, 50, 50)
                 text ("Thats True", 75, 65)
-                trivia = True
+                return True
             elif 50 < mouseX < 50 + 50 and y1 < mouseY < y1 + 50:
                 fill (225, 181, 197)
                 rect (50, y1, 50, 50)
                 text (False, 75, 65)
+                return False
             elif 50 < mouseX < 50 + 50 and y2 < mouseY < y2 + 50:
                 fill (225, 181, 197)
                 rect (50, y1, 50, 50)
                 text (False, 75, 65)
+                return False
     
 
 def game_loop():
@@ -321,11 +349,13 @@ def save_high_scores():
     highScoreFile.close
 
 def on_death():
-    global dead, died
+    global dead, died, death_count
+    death_count += 1
     if dead and died == False:
         died = True
         if check_high_scores():
             save_high_scores()
+        trivia()
     
 def draw():
     global shrink, restarting, countdown_timer
