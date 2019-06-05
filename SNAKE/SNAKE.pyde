@@ -5,6 +5,7 @@ def setup():
     size(900,900)
     frameRate(8)
 
+addedFrameRate = 0
 obstacle_counter = 3
 obstacle_counter = 1
 obstacles = 1
@@ -88,6 +89,7 @@ def game_loop():
     obstacle()
     food()
     display_snake()
+    change_speed()
     if restarting:
         a.speed = 0
         fill(0)
@@ -112,7 +114,9 @@ def game_loop():
         text("Paused",400,420)
         
 def restart():
-    global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, death_countdown, shrink, paused, restarting, countdown_timer
+    global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate
+    frameRate(8)
+    addedFrameRate = 0
     obstacles = 1
     obstacle_counter = 3
     obstacle_counter =1
@@ -223,6 +227,13 @@ def display_snake():
                 rect(snake_positions[0][i-1], snake_positions[1][i-1], 30, 30)
         else:
             rect(snake_positions[0][i-1], snake_positions[1][i-1], 30, 30)
+
+def change_speed():
+    global addedFrameRate
+    defaultFramerate = 8
+    if (snake_length % 5) == 0:
+        addedFrameRate = (snake_length / 5)
+        frameRate((defaultFramerate + addedFrameRate))
 
 class Snake_head():
     def __init__(self):
