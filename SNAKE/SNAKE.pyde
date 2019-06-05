@@ -22,6 +22,7 @@ paused = False
 restarting = True
 countdown_timer = 3
 death_count = 0
+high_score = []
 
 
 
@@ -53,7 +54,7 @@ def trivia():
             answer = str(answer)
             '''
         question = str(num1) + "+" + str(num2)
-        text (question, 50, 60)
+        text (question, 50, 50)
         answer = num1 + num2
         answer = str(answer)
         ans_location = random.randint (1,4)
@@ -98,17 +99,17 @@ def trivia():
             if 50 < mouseX < 50 + 50 and ans_location < mouseY < ans_location + 50:
                 fill (225, 181, 197)
                 rect (50, ans_location, 50, 50)
-                text ("Thats True", 80, ans_location + 10)
+                text ("Thats True", 75, 65)
                 return True
             elif 50 < mouseX < 50 + 50 and y1 < mouseY < y1 + 50:
                 fill (225, 181, 197)
                 rect (50, y1, 50, 50)
-                text ("False", 80, y1 + 10)
+                text (False, 75, 65)
                 return False
             elif 50 < mouseX < 50 + 50 and y2 < mouseY < y2 + 50:
                 fill (225, 181, 197)
                 rect (50, y1, 50, 50)
-                text ("False", 80, y2 + 10)
+                text (False, 75, 65)
                 return False
     
 
@@ -244,7 +245,7 @@ def display_snake():
     global positions, snake_length, shrink, dead, death_countdown, paused
     if dead:
         death_countdown += 1
-        trivia()
+        #trivia()
     for i in range(0, snake_length):
         fill(60,180,180)
         if dead:
@@ -332,20 +333,36 @@ def keyPressed():
             paused = True
     elif key == "r":
         restart()
-def check_high_scores():
-    global snake_length
+def save_old_high_scores():
+    global snake_length, high_score
     highScoreFile = open("high_scores.txt", "r")
-    high_score = highScoreFile.readline()
+    for i in range(9):
+        high_score.append(int(highScoreFile.readline()))
+        print(high_score[i])
     highScoreFile.close
-    if snake_length > int(high_score):
-        return True
-    else:
-        return False
-    
-def save_high_scores():
-    global snake_length
+        
+def check_high_scores():
+    global snake_length, high_score
+    check = False
+    highScoreFile = open("high_scores.txt", "r")
+    for i in range(len(high_score)):
+        if snake_length > high_score[i]:
+            check = True
+    highScoreFile.close    
+    return check
+
+def replace_high_scores():
+    global snake_length, high_score    
+    high_score.sort(reverse = True)
+    del high_score[-1]
+    high_score.append(snake_length)
+        
+def save_new_high_scores():
+    global snake_length, high_score
     highScoreFile = open("high_scores.txt", "w")
-    highScoreFile.write(str(snake_length))
+    high_score.sort(reverse = True)
+    for i in range(len(high_score)):
+        highScoreFile.writelines(str(high_score[i]) + "\n") 
     highScoreFile.close
 
 def on_death():
@@ -353,8 +370,10 @@ def on_death():
     death_count += 1
     if dead and died == False:
         died = True
+        save_old_high_scores()
         if check_high_scores():
-            save_high_scores()
+            replace_high_scores()
+            save_new_high_scores()
         trivia()
     
 def draw():
