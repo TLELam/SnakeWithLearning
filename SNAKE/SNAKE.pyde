@@ -15,6 +15,7 @@ snake_length = 1
 obstacle_positions = [[(random.randint(10,20)*30)],[(random.randint(10,20)*30)],[(random.randint(1,5)*30)],[(random.randint(1,5)*30)]]
 snake_positions = [[(random.randint(10,20)*30)],[(random.randint(10,20)*30)]]
 dead = False
+died = False
 death_countdown = 0
 shrink = 1
 paused = False
@@ -125,6 +126,7 @@ def restart():
     obstacle_positions = [[(random.randint(10,20)*30)],[(random.randint(10,20)*30)],[(random.randint(1,5)*30)],[(random.randint(1,5)*30)]]
     snake_positions = [[(random.randint(10,20)*30)],[(random.randint(10,20)*30)]]
     dead = False
+    died = False
     death_countdown = 0
     shrink = 1
     paused = False
@@ -278,7 +280,6 @@ class Snake_head():
 
 a = Snake_head()
 
-
 def keyPressed():
     global turns, paused
     #Checking which key was pressed
@@ -303,6 +304,7 @@ def keyPressed():
             paused = True
     elif key == "r":
         restart()
+        
 def check_high_scores():
     global snake_length
     highScoreFile = open("high_scores.txt", "r")
@@ -314,6 +316,7 @@ def check_high_scores():
         return False
     
 def save_high_scores():
+    global snake_length
     highScoreFile = open("high_scores.txt", "w")
     highScoreFile.write(str(snake_length))
     highScoreFile.close
