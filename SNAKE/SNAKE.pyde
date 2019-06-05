@@ -90,6 +90,7 @@ def game_loop():
     obstacle()
     food()
     display_snake()
+    on_death()
     change_speed()
     if restarting:
         a.speed = 0
@@ -115,7 +116,7 @@ def game_loop():
         text("Paused",400,420)
         
 def restart():
-    global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate
+    global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, died, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate
     frameRate(8)
     addedFrameRate = 0
     obstacles = 1
@@ -219,8 +220,6 @@ def display_snake():
     for i in range(0, snake_length):
         fill(60,180,180)
         if dead:
-            if check_high_scores:
-                save_high_scores()
             if death_countdown > snake_length:
                 snake_length = 1
                 shrink = shrink*0.7
@@ -280,6 +279,7 @@ class Snake_head():
 
 a = Snake_head()
 
+
 def keyPressed():
     global turns, paused
     #Checking which key was pressed
@@ -304,7 +304,6 @@ def keyPressed():
             paused = True
     elif key == "r":
         restart()
-        
 def check_high_scores():
     global snake_length
     highScoreFile = open("high_scores.txt", "r")
@@ -320,6 +319,13 @@ def save_high_scores():
     highScoreFile = open("high_scores.txt", "w")
     highScoreFile.write(str(snake_length))
     highScoreFile.close
+
+def on_death():
+    global dead, died
+    if dead and died == False:
+        died = True
+        if check_high_scores():
+            save_high_scores()
     
 def draw():
     global shrink, restarting, countdown_timer
