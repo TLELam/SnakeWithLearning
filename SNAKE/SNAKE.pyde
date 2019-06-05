@@ -53,7 +53,7 @@ def trivia():
             answer = str(answer)
             '''
         question = str(num1) + "+" + str(num2)
-        text (question, 50, 50)
+        text (question, 50, 60)
         answer = num1 + num2
         answer = str(answer)
         ans_location = random.randint (1,4)
@@ -98,17 +98,17 @@ def trivia():
             if 50 < mouseX < 50 + 50 and ans_location < mouseY < ans_location + 50:
                 fill (225, 181, 197)
                 rect (50, ans_location, 50, 50)
-                text ("Thats True", 75, 65)
+                text ("Thats True", 80, ans_location + 10)
                 return True
             elif 50 < mouseX < 50 + 50 and y1 < mouseY < y1 + 50:
                 fill (225, 181, 197)
                 rect (50, y1, 50, 50)
-                text (False, 75, 65)
+                text ("False", 80, y1 + 10)
                 return False
             elif 50 < mouseX < 50 + 50 and y2 < mouseY < y2 + 50:
                 fill (225, 181, 197)
                 rect (50, y1, 50, 50)
-                text (False, 75, 65)
+                text ("False", 80, y2 + 10)
                 return False
     
 
