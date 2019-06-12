@@ -23,8 +23,14 @@ restarting = True
 countdown_timer = 3
 death_count = 0
 high_score = []
-
-
+        
+def save_old_high_scores():
+    global snake_length, high_score
+    highScoreFile = open("high_scores.txt", "r")
+    for i in range(10):
+        high_score.append(int(highScoreFile.readline()))
+    highScoreFile.close
+save_old_high_scores()
 
 def trivia():
     global death_countdown, dead
@@ -242,6 +248,7 @@ def create_obstacle():
     obstacles += 1
     
 def display_snake():
+    display_high_scores()
     global positions, snake_length, shrink, dead, death_countdown, paused
     if dead:
         death_countdown += 1
@@ -333,13 +340,6 @@ def keyPressed():
             paused = True
     elif key == "r":
         restart()
-def save_old_high_scores():
-    global snake_length, high_score
-    highScoreFile = open("high_scores.txt", "r")
-    for i in range(9):
-        high_score.append(int(highScoreFile.readline()))
-        print(high_score[i])
-    highScoreFile.close
         
 def check_high_scores():
     global snake_length, high_score
@@ -351,12 +351,6 @@ def check_high_scores():
     highScoreFile.close    
     return check
 
-def replace_high_scores():
-    global snake_length, high_score    
-    high_score.sort(reverse = True)
-    del high_score[-1]
-    high_score.append(snake_length)
-        
 def save_new_high_scores():
     global snake_length, high_score
     highScoreFile = open("high_scores.txt", "w")
@@ -364,18 +358,33 @@ def save_new_high_scores():
     for i in range(len(high_score)):
         highScoreFile.writelines(str(high_score[i]) + "\n") 
     highScoreFile.close
+    
+def replace_high_scores():
+    global snake_length, high_score    
+    high_score.sort(reverse = True)
+    del high_score[-1]
+    high_score.append(snake_length)
+    save_new_high_scores()
 
+    
+def display_high_scores():
+    global high_score
+    text("High scores:", 350, 150)
+    for i in range(len(high_score)):
+        text(high_score[i], 425, 200 + i*50)
+        
 def on_death():
     global dead, died, death_count
     death_count += 1
     if dead and died == False:
         died = True
-        save_old_high_scores()
         if check_high_scores():
             replace_high_scores()
-            save_new_high_scores()
         trivia()
-    
+
+        
+
+
 def draw():
     global shrink, restarting, countdown_timer
     game_loop()
