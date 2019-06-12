@@ -476,10 +476,21 @@ def instructions_screen():
     fill("#aaaaff")
     rect(0,0,900,900) #A new "background" for the instructions screen
     
+    
+    
     fill("#aaaaaa")
     rect(350,700,200,50)
     fill("#000000")
     text("Back", 430, 730)
+    text ("Snake with Learning is an educational game by the legendary Team 4 Star", 20, 100)
+    text ("This game plays like traditional snake where the objective is to move the snake to get food", 20, 150)
+    text ("(Green Boxes)", 20, 200)
+    text ("'d' right, 's' down, 'a' left, 'w' up", 20, 250)
+    text ("The user must avoid the border and the various objects that will appear on screen", 20, 300)
+    text ("When the food is 'eaten' the snake grows larger and the user must avoid running into themselves", 20, 350)
+    text ("However, when the user runs into the border, an object, or themselves a math question will appear.", 20, 400)
+    text ("If the user selects the correct answer, they will be able to continue and if not, the game is over", 20, 450)
+    text ("The questions get progressively harder the more the user dies", 20, 500)
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 700) and (mouseY <= 750) and mousePressed:
         display_instructions = False
         
