@@ -418,13 +418,13 @@ def on_death():
     death_count += 1
     if dead and died == False:
         died = True
-        if check_high_scores():
-            replace_high_scores()
         create_trivia()
 
-        
-
-
+def game_over():
+    #take you back to menu (integrate when we have a menu)
+    if check_high_scores():
+        replace_high_scores()
+    
 def draw():
     global shrink, restarting, countdown_timer
     game_loop()
