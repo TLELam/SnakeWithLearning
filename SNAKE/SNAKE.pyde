@@ -466,7 +466,8 @@ def menu():
     rect(350,600,200,50)
     fill("#000000")
     text("Quit", 420, 630)
-
+    if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 600) and (mouseY <= 650) and mousePressed:
+        exit()
    
 def draw():
     global shrink, restarting, countdown_timer, start_game, display_high_score
