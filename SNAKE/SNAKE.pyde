@@ -425,7 +425,32 @@ def game_over():
     if check_high_scores():
         replace_high_scores()
     
+start_game = False
+display_high_score = False
+    
 def draw():
-    global shrink, restarting, countdown_timer
-    game_loop()
+    global shrink, restarting, countdown_timer, start_game, display_high_score
+
+    background("#ffffff")
+    if (start_game == False) and (display_high_score == False):
+        fill("#00aaaa")
+        rect(0,0,900,900) #creates a turqoise background to "hide" what isn't the menu
+        
+        fill("#aaaaaa")
+        rect(250,100,100,50)
+        fill("#000000")
+        text("Restart", 250, 120)
+        #similar if statement to the previous one
+        if (mouseX >= 250) and (mouseX <= 350) and (mouseY >= 100) and (mouseY <= 150) and mousePressed:
+            start_game = True
+        
+        fill("#aaaaaa")
+        rect(250,200,100,50)
+        textSize(14)
+        fill("#000000")
+        text("High Scores", 250, 220)
+        if (mouseX >= 250) and (mouseX <= 350) and (mouseY >= 200) and (mouseY <= 250) and mousePressed:
+            display_high_score = True
+    if start_game == True:
+        game_loop()
    
