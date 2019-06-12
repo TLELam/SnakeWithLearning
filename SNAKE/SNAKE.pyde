@@ -144,18 +144,18 @@ def create_trivia():
         y1 = 0
         y2 = 0
         
-        rand1 = random.randint(answer - 10,answer + 10)
+        rand1 = random.randint(int(answer) - 10,int(answer) + 10)
         rand1 = str(rand1)
         if rand1 == answer:
             while rand1 == answer:
-                rand1 = random.randint(answer -10 ,answer + 10)
+                rand1 = random.randint(int(answer) -10 , int(answer) + 10)
                 rand1 = str(rand)
 
-        rand2 = random.randint(answer - 10, answer + 10)
+        rand2 = random.randint(int(answer) - 10, int(answer) + 10)
         rand2 = str(rand2)
         if rand2 == answer or rand2 == rand1:
             while rand2 == answer or rand2 == rand1:
-                rand2 = random.randint(answer - 10 ,answer + 10)
+                rand2 = random.randint(int(answer) - 10 , int(answer) + 10)
                 rand2 = str(rand2)
         question_created = True
         global ans_location, answer, answer_y, num1, num2, question, rand1, rand2, question_created
