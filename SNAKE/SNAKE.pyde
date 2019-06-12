@@ -64,17 +64,17 @@ def display_trivia():
             y1 = 150
             y2 = 250
         
-        fill(0,0,200)
+        fill(0,0,255)
         rect(50, answer_y, 25*(deaths+2),50)
         rect(50, y1, 25*(deaths+2), 50)
         rect(50, y2, 25*(deaths+2), 50)
         
-        fill(0)
+        fill(255)
         text(answer, 50, answer_y + 45)
         text(rand1, 50, y1 + 45)
         text(rand2, 50, y2 + 45)
         
-        fill(0,255,0)
+        fill(0,0,150)
         text(question, 50, 70)
         
         if answer_clicked:
@@ -129,7 +129,7 @@ def create_trivia():
             answer = str(answer)'''
             
         question = str(num1) + "+" + str(num2)
-        text (question, 50, 50)
+        text(question, 50, 50)
         answer = num1 + num2
         answer = str(answer)
         ans_location = random.randint (1,3)
