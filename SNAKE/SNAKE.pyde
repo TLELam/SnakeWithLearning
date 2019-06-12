@@ -102,6 +102,7 @@ def display_trivia():
                     fill(0,0,255)
                     rect (50, y1, 25*(deaths+2), 50)
                     
+                    
                 elif 50 < mouseX < 50 + (25*(deaths+2)) and y2 < mouseY < y2 + 50:
                     fill(0,0,255)
                     rect (50, y2, 25*(deaths+2), 50)
@@ -143,18 +144,18 @@ def create_trivia():
         y1 = 0
         y2 = 0
         
-        rand1 = random.randint(1,10**(deaths+1)-1)
+        rand1 = random.randint(answer - 10,answer + 10)
         rand1 = str(rand1)
         if rand1 == answer:
             while rand1 == answer:
-                rand1 = random.randint(1,10**(deaths+1)-1)
+                rand1 = random.randint(answer -10 ,answer + 10)
                 rand1 = str(rand)
 
-        rand2 = random.randint(1,10**(deaths+1)-1)
+        rand2 = random.randint(answer - 10, answer + 10)
         rand2 = str(rand2)
         if rand2 == answer or rand2 == rand1:
             while rand2 == answer or rand2 == rand1:
-                rand2 = random.randint(1,10**(deaths+1)-1)
+                rand2 = random.randint(answer - 10 ,answer + 10)
                 rand2 = str(rand2)
         question_created = True
         global ans_location, answer, answer_y, num1, num2, question, rand1, rand2, question_created
