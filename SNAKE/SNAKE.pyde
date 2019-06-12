@@ -425,9 +425,11 @@ def on_death():
         create_trivia()
 
 def game_over():
+    global start_game
     if check_high_scores():
         replace_high_scores()
-    start_game == False
+    start_game = False
+    restart()
     
 start_game = False
 display_high_score = False
@@ -440,20 +442,30 @@ def menu():
     rect(0,0,900,900) #creates a turqoise background to "hide" what isn't the menu
     
     fill("#aaaaaa")
-    rect(250,100,100,50)
+    rect(350,150,200,50)
     fill("#000000")
-    text("Restart", 250, 120)
+    textSize(18)
+    text("Start", 420, 180)
     #similar if statement to the previous one
-    if (mouseX >= 250) and (mouseX <= 350) and (mouseY >= 100) and (mouseY <= 150) and mousePressed:
+    if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 150) and (mouseY <= 200) and mousePressed:
         start_game = True
+        
+    fill("#aaaaaa")
+    rect(350,300,200,50)
+    fill("#000000")
+    text("Instructions",400,330)
     
     fill("#aaaaaa")
-    rect(250,200,100,50)
-    textSize(14)
+    rect(350,450,200,50)
     fill("#000000")
-    text("High Scores", 250, 220)
-    if (mouseX >= 250) and (mouseX <= 350) and (mouseY >= 200) and (mouseY <= 250) and mousePressed:
+    text("High Scores", 400, 480)
+    if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 450) and (mouseY <= 500) and mousePressed:
         display_high_score = True
+            
+    fill("#aaaaaa")
+    rect(350,600,200,50)
+    fill("#000000")
+    text("Quit", 420, 630)
 
    
 def draw():
