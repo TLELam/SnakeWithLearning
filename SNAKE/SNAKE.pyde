@@ -286,7 +286,6 @@ def create_obstacle():
     obstacles += 1
     
 def display_snake():
-    display_high_scores()
     global positions, snake_length, shrink, dead, death_countdown, paused
     if dead:
         death_countdown += 1
@@ -433,10 +432,11 @@ def game_over():
     
 start_game = False
 display_high_score = False
+display_instructions = False
 
 
-def menu():
-    global shrink, restarting, countdown_timer, start_game, display_high_score
+def main_menu():
+    global shrink, restarting, countdown_timer, start_game, display_high_score, display_instructions
 
     fill("#00aaaa")
     rect(0,0,900,900) #creates a turqoise background to "hide" what isn't the menu
@@ -454,6 +454,8 @@ def menu():
     rect(350,300,200,50)
     fill("#000000")
     text("Instructions",400,330)
+    if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 300) and (mouseY <= 350) and mousePressed:
+        display_instructions = True
     
     fill("#aaaaaa")
     rect(350,450,200,50)
@@ -468,12 +470,43 @@ def menu():
     text("Quit", 420, 630)
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 600) and (mouseY <= 650) and mousePressed:
         exit()
+        
+def instructions_screen():
+    global display_instructions
+    fill("#aaaaff")
+    rect(0,0,900,900) #A new "background" for the instructions screen
+    
+    fill("#aaaaaa")
+    rect(350,700,200,50)
+    fill("#000000")
+    text("Back", 430, 730)
+    if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 700) and (mouseY <= 750) and mousePressed:
+        display_instructions = False
+        
+def high_scores_screen():
+    global display_high_score
+    fill("#aa0000")
+    rect(0,0,900,900) #A new "background" for the high scores screen
+    
+    fill("#ffffff")
+    display_high_scores()
+    
+    fill("#aaaaaa")
+    rect(350,700,200,50)
+    fill("#000000")
+    text("Back", 430, 730)
+    if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 700) and (mouseY <= 750) and mousePressed:
+        display_high_score = False
    
 def draw():
-    global shrink, restarting, countdown_timer, start_game, display_high_score
+    global shrink, restarting, countdown_timer, start_game, display_high_score, display_instructions
 
     background("#ffffff")
-    if (start_game == False) and (display_high_score == False):
-        menu()
+    if (start_game == False) and (display_high_score == False) and (display_instructions == False):
+        main_menu()
+    if (start_game == False) and (display_high_score == True):
+        high_scores_screen()
+    if (start_game == False) and (display_instructions == True):
+        instructions_screen()
     if start_game == True:
         game_loop()
