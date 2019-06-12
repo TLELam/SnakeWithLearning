@@ -25,14 +25,6 @@ deaths = 1
 countdown_timer = 3
 death_count = 0
 high_score = []
-        
-def save_old_high_scores():
-    global snake_length, high_score
-    highScoreFile = open("high_scores.txt", "r")
-    for i in range(10):
-        high_score.append(int(highScoreFile.readline()))
-    highScoreFile.close
-save_old_high_scores()
 
 def resume():
     global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, died, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate, question_created, rand1, rand2
@@ -144,18 +136,18 @@ def create_trivia():
         y1 = 0
         y2 = 0
         
-        rand1 = random.randint(answer - 10,answer + 10)
+        rand1 = random.randint(int(answer) - 10, int(answer) + 10)
         rand1 = str(rand1)
         if rand1 == answer:
             while rand1 == answer:
-                rand1 = random.randint(answer -10 ,answer + 10)
-                rand1 = str(rand)
+                rand1 = random.randint(int(answer) -10 , int(answer) + 10)
+                rand1 = str(rand1)
 
-        rand2 = random.randint(answer - 10, answer + 10)
+        rand2 = random.randint(int(answer) - 10, int(answer) + 10)
         rand2 = str(rand2)
         if rand2 == answer or rand2 == rand1:
             while rand2 == answer or rand2 == rand1:
-                rand2 = random.randint(answer - 10 ,answer + 10)
+                rand2 = random.randint(int(answer) - 10 , int(answer) + 10)
                 rand2 = str(rand2)
         question_created = True
         global ans_location, answer, answer_y, num1, num2, question, rand1, rand2, question_created
@@ -381,7 +373,14 @@ def keyPressed():
             paused = True
     elif key == "r":
         restart()
-        
+def save_old_high_scores():
+    global snake_length, high_score
+    highScoreFile = open("high_scores.txt", "r")
+    for i in range(10):
+        high_score.append(int(highScoreFile.readline()))
+    highScoreFile.close
+save_old_high_scores()
+
 def check_high_scores():
     global snake_length, high_score
     check = False
