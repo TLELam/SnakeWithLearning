@@ -101,12 +101,14 @@ def display_trivia():
                 if 50 < mouseX < 50 + (25*(deaths+2)) and y1 < mouseY < y1 + 50:
                     fill(0,0,255)
                     rect (50, y1, 25*(deaths+2), 50)
-                    
+                    text ("Wrong!", 50, y1)
+                    #menu()
                     
                 elif 50 < mouseX < 50 + (25*(deaths+2)) and y2 < mouseY < y2 + 50:
                     fill(0,0,255)
                     rect (50, y2, 25*(deaths+2), 50)
-                    
+                    text ("Wrong!", 50, y2)
+                    #menu()
                     
 def create_trivia():
     global death_countdown, dead, deaths, question_created
