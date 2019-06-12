@@ -25,6 +25,7 @@ deaths = 1
 countdown_timer = 3
 death_count = 0
 high_score = []
+sys.setrecursionlimit(1500)
 
 def resume():
     global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, died, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate, question_created, rand1, rand2
@@ -93,12 +94,15 @@ def display_trivia():
                 if 50 < mouseX < 50 + (25*(deaths+2)) and y1 < mouseY < y1 + 50:
                     fill(0,0,255)
                     rect (50, y1, 25*(deaths+2), 50)
+                    text ("Wrong!", 50, y1)
+                    game_over()
                     
                     
                 elif 50 < mouseX < 50 + (25*(deaths+2)) and y2 < mouseY < y2 + 50:
                     fill(0,0,255)
                     rect (50, y2, 25*(deaths+2), 50)
-                    
+                    text ("Wrong!", 50, y2)
+                    game_over()
                     
 def create_trivia():
     global death_countdown, dead, deaths, question_created
@@ -421,36 +425,42 @@ def on_death():
         create_trivia()
 
 def game_over():
-    #take you back to menu (integrate when we have a menu)
     if check_high_scores():
         replace_high_scores()
+    start_game == False
     
 start_game = False
 display_high_score = False
+
+
+def menu():
+    global shrink, restarting, countdown_timer, start_game, display_high_score
+
+    fill("#00aaaa")
+    rect(0,0,900,900) #creates a turqoise background to "hide" what isn't the menu
     
+    fill("#aaaaaa")
+    rect(250,100,100,50)
+    fill("#000000")
+    text("Restart", 250, 120)
+    #similar if statement to the previous one
+    if (mouseX >= 250) and (mouseX <= 350) and (mouseY >= 100) and (mouseY <= 150) and mousePressed:
+        start_game = True
+    
+    fill("#aaaaaa")
+    rect(250,200,100,50)
+    textSize(14)
+    fill("#000000")
+    text("High Scores", 250, 220)
+    if (mouseX >= 250) and (mouseX <= 350) and (mouseY >= 200) and (mouseY <= 250) and mousePressed:
+        display_high_score = True
+
+   
 def draw():
     global shrink, restarting, countdown_timer, start_game, display_high_score
 
     background("#ffffff")
     if (start_game == False) and (display_high_score == False):
-        fill("#00aaaa")
-        rect(0,0,900,900) #creates a turqoise background to "hide" what isn't the menu
-        
-        fill("#aaaaaa")
-        rect(250,100,100,50)
-        fill("#000000")
-        text("Restart", 250, 120)
-        #similar if statement to the previous one
-        if (mouseX >= 250) and (mouseX <= 350) and (mouseY >= 100) and (mouseY <= 150) and mousePressed:
-            start_game = True
-        
-        fill("#aaaaaa")
-        rect(250,200,100,50)
-        textSize(14)
-        fill("#000000")
-        text("High Scores", 250, 220)
-        if (mouseX >= 250) and (mouseX <= 350) and (mouseY >= 200) and (mouseY <= 250) and mousePressed:
-            display_high_score = True
+        menu()
     if start_game == True:
         game_loop()
-   
