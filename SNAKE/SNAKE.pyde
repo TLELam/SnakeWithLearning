@@ -20,6 +20,8 @@ death_countdown = 0
 shrink = 1
 paused = False
 restarting = True
+question_created = False
+deaths = 1
 countdown_timer = 3
 death_count = 0
 high_score = []
@@ -32,16 +34,86 @@ def save_old_high_scores():
     highScoreFile.close
 save_old_high_scores()
 
-def trivia():
-    global death_countdown, dead
+def resume():
+    global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, died, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate, question_created, rand1, rand2
+    snake_positions = [[300],[300]]
+    for i in range(1,len(snake_positions)):
+        snake_positions[0].append(300)
+        snake_positions[1].append(300)
+    obstacle_positions = [[(random.randint(13,26)*30)],[(random.randint(13,26)*30)],[(random.randint(1,5)*30)],[(random.randint(1,5)*30)]]
+    dead = False
+    died = False
+    death_countdown = 0
+    shrink = 1
+    paused = False
+    restarting = True
+    countdown_timer = 3
+    a.x = snake_positions[0][0]
+    a.y = snake_positions[1][0]
+    a.speed = 30
+    a.direction = random.randint(1,4)
+    a.turned_this_frame = False
+
+def display_trivia():
+    global dead, deaths, ans_location, answer_clicked, answer, answer_y, num1, num2, question, rand1, rand2, created
+    answer_clicked = False
+    if question_created:
+        if ans_location == 1:
+            answer_y = 150
+            y1 = 250
+            y2 = 350
+        elif ans_location == 2:
+            answer_y = 250
+            y1 = 150
+            y2 = 350
+        elif ans_location == 3:
+            answer_y = 350
+            y1 = 150
+            y2 = 250
+        
+        fill(0,0,200)
+        rect(50, answer_y, 25*(deaths+2),50)
+        rect(50, y1, 25*(deaths+2), 50)
+        rect(50, y2, 25*(deaths+2), 50)
+        
+        fill(0)
+        text(answer, 50, answer_y + 45)
+        text(rand1, 50, y1 + 45)
+        text(rand2, 50, y2 + 45)
+        
+        fill(0,255,0)
+        text(question, 50, 70)
+        
+        if answer_clicked:
+            fill(0,0,255)
+            rect (50, answer_y, 25*(deaths+2), 50)
+        
+        if mousePressed == True:
+                if 50 < mouseX < 50 + (25*(deaths+2)) and answer_y < mouseY < answer_y + 50:
+                    answer_clicked = True
+                    fill(0,255,0)
+                    text("Correct!", 50, answer_y)
+                    fill(0,0,255)
+                    rect (50, answer_y, 25*(deaths+2), 50)
+                    time.sleep(2)
+                    resume()
+                    
+                if 50 < mouseX < 50 + (25*(deaths+2)) and y1 < mouseY < y1 + 50:
+                    fill(0,0,255)
+                    rect (50, y1, 25*(deaths+2), 50)
+                    
+                elif 50 < mouseX < 50 + (25*(deaths+2)) and y2 < mouseY < y2 + 50:
+                    fill(0,0,255)
+                    rect (50, y2, 25*(deaths+2), 50)
+                    
+                    
+def create_trivia():
+    global death_countdown, dead, deaths, question_created
     if dead == True:
-        if death_countdown < 5:
-            num1 = random.randint(1,11)
-            num2 = random.randint(1,11)
-        else:
-            num1 = random.randint(10,100)
-            num2 = random.randint(10,100)
-            '''
+        num1 = random.randint(1,10**(deaths+1)-1)
+        num2 = random.randint(1,10**(deaths+1)-1)
+        
+        '''
         if selection == addition:
             question = str(num1) + "+" + str(num2)
             answer = num1 + num2
@@ -57,66 +129,35 @@ def trivia():
         elif selection == division:
             question = str(num1) + "/" + str(num2)
             answer = num1 / num2
-            answer = str(answer)
-            '''
+            answer = str(answer)'''
+            
         question = str(num1) + "+" + str(num2)
-        text (question, 50, 60)
+        text (question, 50, 50)
         answer = num1 + num2
         answer = str(answer)
-        ans_location = random.randint (1,4)
+        ans_location = random.randint (1,3)
         count = 1
         count_rand = 0
         y = 150
+        answer_y = 0
         y1 = 0
         y2 = 0
-        for i in range (0,3):
-            if count == ans_location:
-                answer_y = y
-                fill (0, 0, 700)
-                rect (50, y, 50, 50)
-                text (answer, 50, answer_y)
-            else:
-                if count_rand == 1:
-                    rand = random.randint(0,101)
-                    rand = str(rand)
-                    if rand == answer:
-                        while rand == answer:
-                            rand = random.randint(0,101)
-                            rand = str(rand)
-                    y1 = y
-                    fill (0, 0, 700)
-                    rect (50, y1, 50, 50)
-                    text (rand, 50, y1)
+        
+        rand1 = random.randint(1,10**(deaths+1)-1)
+        rand1 = str(rand1)
+        if rand1 == answer:
+            while rand1 == answer:
+                rand1 = random.randint(1,10**(deaths+1)-1)
+                rand1 = str(rand)
 
-                elif count_rand == 2:
-                    rand = random.randint(0,101)
-                    rand = str(rand)
-                    if rand == answer:
-                        while rand == answer:
-                            rand = random.randint(0,101)
-                            rand = str(rand)
-                    y2 = y
-                    fill (0, 0, 700)
-                    rect (50, y2, 50, 50)
-                    text (rand, 50, y2)
-                count_rand += 1
-            y += 100
-        if mousePressed == True:
-            if 50 < mouseX < 50 + 50 and ans_location < mouseY < ans_location + 50:
-                fill (225, 181, 197)
-                rect (50, ans_location, 50, 50)
-                text ("Thats True", 80, ans_location + 10)
-                return True
-            elif 50 < mouseX < 50 + 50 and y1 < mouseY < y1 + 50:
-                fill (225, 181, 197)
-                rect (50, y1, 50, 50)
-                text (False, 80, y1 + 10)
-                return False
-            elif 50 < mouseX < 50 + 50 and y2 < mouseY < y2 + 50:
-                fill (225, 181, 197)
-                rect (50, y1, 50, 50)
-                text (False, 80, y2 + 10)
-                return False
+        rand2 = random.randint(1,10**(deaths+1)-1)
+        rand2 = str(rand2)
+        if rand2 == answer or rand2 == rand1:
+            while rand2 == answer or rand2 == rand1:
+                rand2 = random.randint(1,10**(deaths+1)-1)
+                rand2 = str(rand2)
+        question_created = True
+        global ans_location, answer, answer_y, num1, num2, question, rand1, rand2, question_created
     
 
 def game_loop():
@@ -252,12 +293,11 @@ def display_snake():
     global positions, snake_length, shrink, dead, death_countdown, paused
     if dead:
         death_countdown += 1
-        #trivia()
+        display_trivia()
     for i in range(0, snake_length):
         fill(60,180,180)
         if dead:
             if death_countdown > snake_length:
-                snake_length = 1
                 shrink = shrink*0.7
                 rect(snake_positions[0][0]+(shrink-shrink*15)+10.5, snake_positions[1][0]+(shrink-shrink*15)+10.5, shrink*30, shrink*30)
             else:
@@ -380,7 +420,7 @@ def on_death():
         died = True
         if check_high_scores():
             replace_high_scores()
-        trivia()
+        create_trivia()
 
         
 
