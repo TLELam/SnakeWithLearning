@@ -26,12 +26,25 @@ high_score = []
 sys.setrecursionlimit(1500)
 
 def resume():
-    global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, died, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate, question_created, rand1, rand2
-    snake_positions = [[300],[300]]
-    for i in range(1,len(snake_positions)):
-        snake_positions[0].append(300)
-        snake_positions[1].append(300)
-    obstacle_positions = [[(random.randint(13,26)*30)],[(random.randint(13,26)*30)],[(random.randint(1,5)*30)],[(random.randint(1,5)*30)]]
+    global obstacles, obstacle_counter, food_exists, snake_length, obstacle_positions, snake_positions, dead, died, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate, question_created, rand1, rand2
+    
+    overlapping = True
+    while overlapping:
+        snake_positions = [[random.randint(7,23)*30],[random.randint(7,23)*30]]
+        
+        check = 0
+        
+        for i in range (0, obstacle_counter):
+            if (obstacle_positions[0][i-1] - 90 < snake_positions[0][0] < obstacle_positions[0][i-1] + obstacle_positions[2][i-1] + 90) and (obstacle_positions[1][i-1] - 90 < snake_positions[1][0] < obstacle_positions[1][i-1] + obstacle_positions[3][i-1] + 90):
+                check += 1
+                break
+                
+        if check == 0:
+            break
+    
+    for i in range(1, snake_length):
+        snake_positions[0].append(snake_positions[0][0])
+        snake_positions[1].append(snake_positions[1][0])
     dead = False
     died = False
     death_countdown = 0
@@ -179,7 +192,6 @@ def game_loop():
         time.sleep(1)
         if countdown_timer == 0:
             restarting = False
-            #a.speed = 30
         countdown_timer -= 1
     fill(0)
     text(snake_length, 810, 80)
@@ -266,8 +278,8 @@ def create_obstacle():
     global obstacle_exists, obstacles, obstacle_x, obstacle_y, obstacle_h, obstacle_w
     overlapping = True
     while overlapping:
-        obstacle_x = random.randint(2,24)*30
-        obstacle_y = random.randint(2,24)*30
+        obstacle_x = random.randint(2,23)*30
+        obstacle_y = random.randint(2,23)*30
         obstacle_h = random.randint(1,5)*30
         obstacle_w = random.randint(1,5)*30
         
