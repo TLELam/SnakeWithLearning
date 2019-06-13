@@ -117,14 +117,28 @@ def display_trivia():
 def create_trivia():
     global death_countdown, dead, deaths, question_created
     if dead == True:
-        num1 = random.randint(1,10**(deaths-1)-1)
-        num2 = random.randint(1,10**(deaths-1)-1)
         
-        operation = random.randint(1,2)
+        operation = random.randint(1,4)
         if operation == 1:
             selection = "addition"
         elif operation == 2:
             selection = "subtraction"
+        elif operation == 3:
+            selection = "multiplication"
+        elif operation == 4:
+            selection = "division"
+            
+        
+        if selection == "division":
+            num1 = random.randint(1,10**(deaths-1)-1)
+            num2 = random.randint(1,10**(deaths-1)-1)
+            while num1 % num2 != 0:
+                num1 = random.randint(1,10**(deaths-1)-1)
+                num2 = random.randint(1,10**(deaths-1)-1)
+            
+        else:
+            num1 = random.randint(1,10**(deaths-1)-1)
+            num2 = random.randint(1,10**(deaths-1)-1)
         
         
         if selection == "addition":
@@ -500,7 +514,9 @@ def main_menu():
     text("Quit", 420, 630)
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 600) and (mouseY <= 650) and mousePressed:
         exit()
+
         
+    
 def instructions_screen():
     global display_instructions
     fill("#aaaaff")
