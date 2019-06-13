@@ -6,7 +6,6 @@ def setup():
     frameRate(8)
 
 addedFrameRate = 0
-obstacle_counter = 3
 obstacle_counter = 1
 obstacles = 1
 obstacle_exists = False
@@ -23,7 +22,6 @@ restarting = True
 question_created = False
 deaths = 1
 countdown_timer = 3
-death_count = 0
 high_score = []
 sys.setrecursionlimit(1500)
 
@@ -65,9 +63,9 @@ def display_trivia():
             y2 = 250
         
         fill(0,0,255)
-        rect(50, answer_y, 25*(deaths+2),50)
-        rect(50, y1, 25*(deaths+2), 50)
-        rect(50, y2, 25*(deaths+2), 50)
+        rect(50, answer_y, 25*(deaths+1),50)
+        rect(50, y1, 25*(deaths+1), 50)
+        rect(50, y2, 25*(deaths+1), 50)
         
         fill(255)
         text(answer, 50, answer_y + 45)
@@ -79,7 +77,7 @@ def display_trivia():
         
         if answer_clicked:
             fill(0,0,255)
-            rect (50, answer_y, 25*(deaths+2), 50)
+            rect (50, answer_y, 25*(deaths+1), 50)
         
         if mousePressed == True:
                 if 50 < mouseX < 50 + (25*(deaths+2)) and answer_y < mouseY < answer_y + 50:
@@ -87,51 +85,53 @@ def display_trivia():
                     fill(0,255,0)
                     text("Correct!", 50, answer_y)
                     fill(0,0,255)
-                    rect (50, answer_y, 25*(deaths+2), 50)
-                    time.sleep(2)
+                    rect (50, answer_y, 25*(deaths+1), 50)
                     resume()
                     
-                if 50 < mouseX < 50 + (25*(deaths+2)) and y1 < mouseY < y1 + 50:
+                if 50 < mouseX < 50 + (25*(deaths+1)) and y1 < mouseY < y1 + 50:
                     fill(0,0,255)
-                    rect (50, y1, 25*(deaths+2), 50)
+                    rect (50, y1, 25*(deaths+1), 50)
                     text ("Wrong!", 50, y1)
                     game_over()
                     
                     
                 elif 50 < mouseX < 50 + (25*(deaths+2)) and y2 < mouseY < y2 + 50:
                     fill(0,0,255)
-                    rect (50, y2, 25*(deaths+2), 50)
+                    rect (50, y2, 25*(deaths+1), 50)
                     text ("Wrong!", 50, y2)
                     game_over()
                     
 def create_trivia():
     global death_countdown, dead, deaths, question_created
     if dead == True:
-        num1 = random.randint(1,10**(deaths+1)-1)
-        num2 = random.randint(1,10**(deaths+1)-1)
+        num1 = random.randint(1,10**(deaths-1)-1)
+        num2 = random.randint(1,10**(deaths-1)-1)
         
-        '''
-        if selection == addition:
+        operation = random.randint(1,2)
+        if operation == 1:
+            selection = "addition"
+        elif operation == 2:
+            selection = "subtraction"
+        
+        
+        if selection == "addition":
             question = str(num1) + "+" + str(num2)
             answer = num1 + num2
             answer = str(answer)
-        elif selection == subtraction:
+        elif selection == "subtraction":
             question = str (num1) + "-" + str(num2)
             answer = num1 - num2
             answer = str(answer)
-        elif selection == multiplication:
+        elif selection == "multiplication":
             question = str(num1) + "x" + str(num2)
             answer = num1 * num2
             answer = str(answer)
-        elif selection == division:
+        elif selection == "division":
             question = str(num1) + "/" + str(num2)
             answer = num1 / num2
-            answer = str(answer)'''
+            answer = str(answer)
             
-        question = str(num1) + "+" + str(num2)
         text(question, 50, 50)
-        answer = num1 + num2
-        answer = str(answer)
         ans_location = random.randint (1,3)
         count = 1
         count_rand = 0
@@ -147,7 +147,7 @@ def create_trivia():
                 rand1 = random.randint(int(answer) -10 , int(answer) + 10)
                 rand1 = str(rand1)
 
-        rand2 = random.randint(int(answer) - 10, int(answer) + 10)
+        rand2 = int(answer) + random.randint(-deaths + 1, deaths)*5
         rand2 = str(rand2)
         if rand2 == answer or rand2 == rand1:
             while rand2 == answer or rand2 == rand1:
@@ -264,10 +264,26 @@ def obstacle():
 
 def create_obstacle():
     global obstacle_exists, obstacles, obstacle_x, obstacle_y, obstacle_h, obstacle_w
-    obstacle_x = random.randint(1,28)*30
-    obstacle_y = random.randint(1,28)*30
-    obstacle_h = random.randint(1,5)*30
-    obstacle_w = random.randint(1,5)*30
+    overlapping = True
+    while overlapping:
+        obstacle_x = random.randint(2,24)*30
+        obstacle_y = random.randint(2,24)*30
+        obstacle_h = random.randint(1,5)*30
+        obstacle_w = random.randint(1,5)*30
+        
+        check = 0
+        
+        for i in range (0, snake_length-1):
+            if (obstacle_x - 90 < snake_positions[0][i-1] < obstacle_x + obstacle_w + 90) and (obstacle_y - 90 < snake_positions[1][i-1] < obstacle_y + obstacle_h + 90):
+                check += 1
+                break
+        for i in range (0, obstacle_counter):    
+            if (obstacle_x - 30 < obstacle_positions[0][i-1]  < obstacle_x + obstacle_w + 30) and (obstacle_y - 30 < obstacle_positions[1][i-1] < obstacle_y + obstacle_h + 30):
+                check += 1
+                
+        if check == 0:
+            break
+        
     
     obstacle_positions[0].append(obstacle_x)
     obstacle_positions[1].append(obstacle_y)
@@ -302,11 +318,13 @@ def display_snake():
             rect(snake_positions[0][i-1], snake_positions[1][i-1], 30, 30)
 
 def change_speed():
-    global addedFrameRate
+    global addedFrameRate, obstacle_counter
     defaultFramerate = 8
     if (snake_length % 5) == 0:
         addedFrameRate = (snake_length / 5)
         frameRate((defaultFramerate + addedFrameRate))
+        obstacle_counter = 1 + addedFrameRate
+
 
 class Snake_head():
     def __init__(self):
@@ -417,10 +435,10 @@ def display_high_scores():
         text(high_score[i], 425, 200 + i*50)
         
 def on_death():
-    global dead, died, death_count
-    death_count += 1
+    global dead, died, deaths
     if dead and died == False:
         died = True
+        deaths += 1
         create_trivia()
 
 def game_over():
