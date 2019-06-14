@@ -25,6 +25,7 @@ countdown_timer = 3
 high_score = []
 sys.setrecursionlimit(1500)
 
+
 def resume():
     global obstacles, obstacle_counter, food_exists, snake_length, obstacle_positions, snake_positions, dead, died, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate, question_created, rand1, rand2
     
@@ -58,6 +59,7 @@ def resume():
     a.direction = random.randint(1,4)
     a.turned_this_frame = False
 
+#Function displays the trivia question
 def display_trivia():
     global dead, deaths, ans_location, answer_clicked, answer, answer_y, num1, num2, question, rand1, rand2, created
     answer_clicked = False
@@ -113,7 +115,8 @@ def display_trivia():
                     rect (50, y2, 25*(deaths+1), 50)
                     text ("Wrong!", 50, y2)
                     game_over()
-                    
+ 
+#Function creates the type of question and the numbers involved in the math question                
 def create_trivia():
     global death_countdown, dead, deaths, question_created
     if dead == True:
@@ -213,7 +216,8 @@ def game_loop():
     if paused:
         fill(230,0,0)
         text("Paused",400,420)
-        
+
+       
 def restart():
     global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, died, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate
     frameRate(8)
@@ -478,7 +482,7 @@ start_game = False
 display_high_score = False
 display_instructions = False
 
-
+#Function displays the main menu
 def main_menu():
     global shrink, restarting, countdown_timer, start_game, display_high_score, display_instructions
 
@@ -516,14 +520,12 @@ def main_menu():
         exit()
 
         
-    
+#Function displays the instructions for the game
 def instructions_screen():
     global display_instructions
     fill("#aaaaff")
     rect(0,0,900,900) #A new "background" for the instructions screen
-    
-    
-    
+
     fill("#aaaaaa")
     rect(350,700,200,50)
     fill("#000000")
@@ -536,10 +538,11 @@ def instructions_screen():
     text ("When the food is 'eaten' the snake grows larger and the user must avoid running into themselves", 20, 350)
     text ("However, when the user runs into the border, an object, or themselves a math question will appear.", 20, 400)
     text ("If the user selects the correct answer, they will be able to continue and if not, the game is over", 20, 450)
-    text ("The questions get progressively harder the more the user dies", 20, 500)
+    text ("The Difficulty of question increases as your score gets higher!", 20, 500)
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 700) and (mouseY <= 750) and mousePressed:
         display_instructions = False
-        
+ 
+#Function displays the high scores    
 def high_scores_screen():
     global display_high_score
     fill("#aa0000")
