@@ -75,6 +75,7 @@ def resume():
     paused = False
     restarting = True
     countdown_timer = 3
+    question_created = False
     a.x = snake_positions[0][0]
     a.y = snake_positions[1][0]
     a.speed = 30
@@ -83,7 +84,7 @@ def resume():
     
 #A function to display the trivia question when needed
 def display_trivia():
-    global dead, deaths, ans_location, answer_clicked, answer, answer_y, num1, num2, question, rand1, rand2, created
+    global dead, deaths, ans_location, ans_digits, answer_clicked, answer, answer_y, num1, num2, question, rand1, rand1_width, rand2, rand2_width, created
     #Variable declaration
     answer_clicked = False
     #Making sure there is a quesion generated before trying to display one
@@ -103,31 +104,12 @@ def display_trivia():
             y2 = 250
         
         fill(0,0,255)
-        #The width of the buttons must increase with length of the answer
-        #To determine the number of digits we take the base 10 log of the answer and round up
-        if answer != "0" and answer != "1" and answer != "-1":
-            #Log 0 will return an error
-            #answer must be converted to positive to be logged
-            ans_digits = math.log10(abs(int(answer)))
-            ans_digits = math.ceil(ans_digits)
-        else:
-            ans_digits = 1
-        #If the answer is negative, more space is needed for the negative sign
-        if answer < 0:
-            ans_digits += 1
+
             
         #Creating the buttons
-        rect(50, answer_y, 25*ans_digits,50)
-        #The wrong answers have a chance of being negative even if the answer isn't. If it is, the button must be larger to accomodate the negative sign
-        if int(rand1) >= 0:
-            rect(50, y1, 25*ans_digits, 50)
-        else:
-            rect(50, y1, 25*(ans_digits+1), 50)
-        if int(rand2) >= 0:
-            rect(50, y2, 25*ans_digits, 50)
-        else:
-            rect(50, y2, 25*(ans_digits+1), 50)
-        
+        rect(50, answer_y, ans_width, 50)
+        rect(50, y1, rand1_width, 50)
+        rect(50, y2, rand2_width, 50)
         #Adding the text
         fill(255)
         text(answer, 50, answer_y + 45)
@@ -141,35 +123,35 @@ def display_trivia():
         #Notifying the player if they clicked the answer
         if answer_clicked:
             fill(0,0,255)
-            rect (50, answer_y, 25*(deaths+1), 50)
+            rect (50, answer_y, ans_width, 50)
             fill(0,255,0)
             text("Correct!", 50, answer_y)
         
         #Button code
         if mousePressed == True:
-                if 50 < mouseX < 50 + (25*(deaths+2)) and answer_y < mouseY < answer_y + 50:
+                if 50 < mouseX < 50 + ans_width and answer_y < mouseY < answer_y + 50:
                     #They clicked the answer
                     answer_clicked = True
                     fill(0,255,0)
                     text("Correct!", 50, answer_y)
                     fill(0,0,255)
-                    rect (50, answer_y, 25*(deaths+1), 50)
+                    rect (50, answer_y, ans_width, 50)
                     #Resume game
                     resume()
                     
-                if 50 < mouseX < 50 + (25*(deaths+1)) and y1 < mouseY < y1 + 50:
+                if 50 < mouseX < 50 + rand1_width and y1 < mouseY < y1 + 50:
                     #They clicked the wrong one
                     fill(0,0,255)
-                    rect (50, y1, 25*(deaths+1), 50)
+                    rect (50, y1, rand1_width, 50)
                     text ("Wrong!", 50, y1)
                     #Game over
                     game_over()
                     
                     
-                elif 50 < mouseX < 50 + (25*(deaths+2)) and y2 < mouseY < y2 + 50:
+                elif 50 < mouseX < 50 + rand2_width and y2 < mouseY < y2 + 50:
                     #They clicked the wrong one
                     fill(0,0,255)
-                    rect (50, y2, 25*(deaths+1), 50)
+                    rect (50, y2, rand2_width, 50)
                     text ("Wrong!", 50, y2)
                     #Game over
                     game_over()
@@ -215,7 +197,7 @@ def create_trivia():
         question = str(num1) + "/" + str(num2)
         answer = num1 / num2
         answer = str(answer)
-        
+
     #Randomly picking which button will have the answer
     ans_location = random.randint (1,3)
     #Y cooridinates for the buttons
@@ -243,10 +225,56 @@ def create_trivia():
             rand2 = int(answer) + random.randint(-deaths + 1, deaths)*5
             rand2 = str(rand2)
     
+    #The width of the buttons must increase with length of the answer
+    ans_width = 25
+    rand1_width = 25
+    rand2_width = 25
+    #To determine the number of digits we take the base 10 log of the answer, add one, and round down.
+    if answer != "0" and answer != "1" and answer != "-1":
+        #Log 0 will return an error
+        #answer must be converted to positive to be logged
+        ans_digits = math.log10(abs(float(answer)))
+        ans_digits += 1
+        ans_digits = math.floor(ans_digits)
+        ans_width = ans_digits*25
+    else:
+        ans_width = 25
+    #If the answer is negative, more space is needed for the negative sign
+    if int(answer) < 0:
+        ans_width += 25
+        
+    #To determine the number of digits we take the base 10 log of the answer, add one, and round down.
+    if rand1 != "0" and rand1 != "1" and rand1 != "-1":
+        #Log 0 will return an error
+        #Rand1 must be converted to positive to be logged
+        rand1_digits = math.log10(abs(float(rand1)))
+        rand1_digits += 1.0
+        rand1_digits = math.floor(rand1_digits)
+        rand1_width = rand1_digits*25
+    else:
+        rand1_width = 25
+    #If rand1 is negative, more space is needed for the negative sign
+    if int(rand1) < 0:
+        rand1_width += 25
+        
+    #To determine the number of digits we take the base 10 log of the answer, add one, and round down.
+    if rand2 != "0" and rand2 != "1" and rand2 != "-1":
+        #Log 0 will return an error
+        #Rand2 must be converted to positive to be logged
+        rand2_digits = math.log10(abs(float(rand2)))
+        rand2_digits += 1.0
+        rand2_digits = math.floor(rand2_digits)
+        rand2_width = rand2_digits*25
+    else:
+        rand2_width = 25
+    #If rand2 is negative, more space is needed for the negative sign
+    if int(rand2) < 0:
+        rand2_width += 25
+    
     #Setting question_created to be true
     question_created = True
     #Outputting all the new variables we will use in display_trivia()
-    global ans_location, answer, answer_y, num1, num2, question, rand1, rand2, question_created
+    global ans_location, ans_digits, ans_width, answer, answer_y, num1, num2, question, rand1, rand1_width, rand2, rand2_width, question_created
     
 #All the code to run the snake game. This can be called in the draw function depending on whether the game is supposed to be running
 def game_loop():
@@ -292,7 +320,7 @@ def game_loop():
 
 #A function to restart the game
 def restart():
-    global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, died, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate
+    global obstacles, obstacle_counter, food_exists, snake_length,obstacle_positions, snake_positions, dead, died, deaths, death_countdown, shrink, paused, restarting, countdown_timer, addedFrameRate
     #As this is just a more intense resume, we reset a few more variables and then call the resume() function
     frameRate(8)
     addedFrameRate = 0
@@ -301,6 +329,7 @@ def restart():
     obstacle_positions = [[(random.randint(10,20)*30)],[(random.randint(10,20)*30)],[(random.randint(1,5)*30)],[(random.randint(1,5)*30)]]
     food_exists = False
     snake_length = 1
+    deaths = 0
     resume()
 
 #A function for displaying and managing the food
@@ -534,7 +563,7 @@ def save_old_high_scores():
     for i in range(10):
         high_score.append(int(highScoreFile.readline()))
     highScoreFile.close
-save_old_high_scores()
+#save_old_high_scores()
 
 #this function checks to see if snake_length is larger than any number in the high_score array
 def check_high_scores():
