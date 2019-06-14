@@ -563,7 +563,7 @@ def save_old_high_scores():
     for i in range(10):
         high_score.append(int(highScoreFile.readline()))
     highScoreFile.close
-#save_old_high_scores()
+save_old_high_scores()
 
 #this function checks to see if snake_length is larger than any number in the high_score array
 def check_high_scores():
