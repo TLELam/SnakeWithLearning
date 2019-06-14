@@ -59,7 +59,7 @@ def resume():
     a.direction = random.randint(1,4)
     a.turned_this_frame = False
 
-#Function displays the trivia question
+#Function displays the trivia question (Multiple Choice)
 def display_trivia():
     global dead, deaths, ans_location, answer_clicked, answer, answer_y, num1, num2, question, rand1, rand2, created
     answer_clicked = False
@@ -116,11 +116,12 @@ def display_trivia():
                     text ("Wrong!", 50, y2)
                     game_over()
  
-#Function creates the type of question and the numbers involved in the math question                
+#Function creates the type of question (addition, subtraction, multiplication, division) and the numbers involved in the math question
+#The numbers used in the question get larger each trivia question             
 def create_trivia():
     global death_countdown, dead, deaths, question_created
     if dead == True:
-        
+        #Randomizes the type of question
         operation = random.randint(1,4)
         if operation == 1:
             selection = "addition"
@@ -135,6 +136,7 @@ def create_trivia():
         if selection == "division":
             num1 = random.randint(1,10**(deaths-1)-1)
             num2 = random.randint(1,10**(deaths-1)-1)
+            #Makes sure that the answer is an integer (second number goes evenly into the first)
             while num1 % num2 != 0:
                 num1 = random.randint(1,10**(deaths-1)-1)
                 num2 = random.randint(1,10**(deaths-1)-1)
@@ -162,6 +164,7 @@ def create_trivia():
             answer = str(answer)
             
         text(question, 50, 50)
+        #Randomizes the answer location
         ans_location = random.randint (1,3)
         count = 1
         count_rand = 0
@@ -172,6 +175,7 @@ def create_trivia():
         
         rand1 = random.randint(int(answer) - 10, int(answer) + 10)
         rand1 = str(rand1)
+        #Makes sure that the wrong answer are not equal to the right answer
         if rand1 == answer:
             while rand1 == answer:
                 rand1 = random.randint(int(answer) -10 , int(answer) + 10)
@@ -179,6 +183,7 @@ def create_trivia():
 
         rand2 = int(answer) + random.randint(-deaths + 1, deaths)*5
         rand2 = str(rand2)
+        #Makes sure that the wrong answers are not equal to eachother or the answer
         if rand2 == answer or rand2 == rand1:
             while rand2 == answer or rand2 == rand1:
                 rand2 = random.randint(int(answer) - 10 , int(answer) + 10)
@@ -463,7 +468,8 @@ def display_high_scores():
     text("High scores:", 350, 150)
     for i in range(len(high_score)):
         text(high_score[i], 425, 200 + i*50)
-        
+
+#Function is called when the snake dies and calls the create_trivia() function        
 def on_death():
     global dead, died, deaths
     if dead and died == False:
@@ -471,6 +477,7 @@ def on_death():
         deaths += 1
         create_trivia()
 
+#Function restarts the program once game is over
 def game_over():
     global start_game
     if check_high_scores():
