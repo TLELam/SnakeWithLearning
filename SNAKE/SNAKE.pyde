@@ -525,41 +525,51 @@ def keyPressed():
     #R will restart the game
     elif key == "r":
         restart()
-        
+
+#this function takes the high scores in the file and assigns it to the high_score array        
 def save_old_high_scores():
     global snake_length, high_score
     highScoreFile = open("high_scores.txt", "r")
+    #looping through ten lines of the file to append to the array
     for i in range(10):
         high_score.append(int(highScoreFile.readline()))
     highScoreFile.close
 save_old_high_scores()
 
+#this function checks to see if snake_length is larger than any number in the high_score array
 def check_high_scores():
     global snake_length, high_score
     check = False
     highScoreFile = open("high_scores.txt", "r")
+    #loops through the high_score array, comparing to snake_length
     for i in range(len(high_score)):
         if snake_length > high_score[i]:
             check = True
     highScoreFile.close    
     return check
 
+#saves the new high scores in the file
 def save_new_high_scores():
     global snake_length, high_score
     highScoreFile = open("high_scores.txt", "w")
+    #this sort sets the the array from highest to lowest
     high_score.sort(reverse = True)
     for i in range(len(high_score)):
         highScoreFile.writelines(str(high_score[i]) + "\n") 
     highScoreFile.close
-    
+
+#this function chops off the lowest high score to make room for a new one
 def replace_high_scores():
-    global snake_length, high_score    
+    global snake_length, high_score
+    #making sure the array is in order    
     high_score.sort(reverse = True)
+    #deleting the last item in the array, which would be the lowest number
     del high_score[-1]
+    #adding the new score to the array
     high_score.append(snake_length)
     save_new_high_scores()
 
-    
+#displaying the high score to the user     
 def display_high_scores():
     global high_score
     text("High scores:", 350, 150)
@@ -578,8 +588,10 @@ def on_death():
         #Creating our trivia question
         create_trivia()
 
+#this function triggers when the user gets a game over
 def game_over():
     global start_game
+    #replaces the old high scores with the new high scores in the file
     if check_high_scores():
         replace_high_scores()
     start_game = False
@@ -624,6 +636,9 @@ def main_menu():
     text("Quit", 420, 630)
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 600) and (mouseY <= 650) and mousePressed:
         exit()    
+    
+    fill("#000000")
+    text("Snake, With Learning!", 355, 100)
     
 def instructions_screen():
     global display_instructions
