@@ -463,9 +463,9 @@ def display_snake():
 
 def change_speed():
     global addedFrameRate, obstacle_counter
-    defaultFramerate = 8
+    defaultFramerate = 8 #Speed of the program on start
     if (snake_length % 5) == 0:
-        addedFrameRate = (snake_length / 5)
+        addedFrameRate = (snake_length / 5) #Speed increases by one every 5 length
         frameRate((defaultFramerate + addedFrameRate))
         #Increasing the number of obstacles every 5 length
         obstacle_counter = 1 + addedFrameRate
@@ -637,37 +637,37 @@ def main_menu():
     rect(0,0,900,900) #creates a turqoise background to "hide" what isn't the menu
     
     fill("#aaaaaa")
-    rect(350,150,200,50)
+    rect(350,150,200,50) #Start button
     fill("#000000")
     textSize(18)
     text("Start", 420, 180)
-    #similar if statement to the previous one
+    #if statement used to detect when the button is pressed
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 150) and (mouseY <= 200) and mousePressed:
         start_game = True
         
     fill("#aaaaaa")
-    rect(350,300,200,50)
+    rect(350,300,200,50) #Instructions button
     fill("#000000")
     text("Instructions",400,330)
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 300) and (mouseY <= 350) and mousePressed:
         display_instructions = True
     
     fill("#aaaaaa")
-    rect(350,450,200,50)
+    rect(350,450,200,50) #High scores button
     fill("#000000")
     text("High Scores", 400, 480)
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 450) and (mouseY <= 500) and mousePressed:
         display_high_score = True
             
     fill("#aaaaaa")
-    rect(350,600,200,50)
+    rect(350,600,200,50) #Quit button
     fill("#000000")
     text("Quit", 420, 630)
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 600) and (mouseY <= 650) and mousePressed:
-        exit()    
+        exit() #Exits the program when quit button is pressed
     
     fill("#000000")
-    text("Snake, With Learning!", 355, 100)
+    text("Snake, With Learning!", 355, 100) #Title at main menu
     
 def instructions_screen():
     global display_instructions
@@ -675,7 +675,7 @@ def instructions_screen():
     rect(0,0,900,900) #A new "background" for the instructions screen
     
     fill("#aaaaaa")
-    rect(350,700,200,50)
+    rect(350,700,200,50) #A back button, to return to main menu
     fill("#000000")
     text("Back", 430, 730)
     text ("Snake with Learning is an educational game by the legendary Team 4 Star", 20, 100)
@@ -687,6 +687,7 @@ def instructions_screen():
     text ("However, when the user runs into the border, an object, or themselves a math question will appear.", 20, 400)
     text ("If the user selects the correct answer, they will be able to continue and if not, the game is over", 20, 450)
     text ("The questions get progressively harder the more the user dies", 20, 500)
+    #if statement for mouse detection when clicking on back button
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 700) and (mouseY <= 750) and mousePressed:
         display_instructions = False
         
@@ -696,10 +697,10 @@ def high_scores_screen():
     rect(0,0,900,900) #A new "background" for the high scores screen
     
     fill("#ffffff")
-    display_high_scores()
+    display_high_scores() #This function prints the high scores to the screen
     
     fill("#aaaaaa")
-    rect(350,700,200,50)
+    rect(350,700,200,50) #A back button to return to main menu
     fill("#000000")
     text("Back", 430, 730)
     if (mouseX >= 350) and (mouseX <= 550) and (mouseY >= 700) and (mouseY <= 750) and mousePressed:
@@ -710,10 +711,10 @@ def draw():
 
     background("#ffffff")
     if (start_game == False) and (display_high_score == False) and (display_instructions == False):
-        main_menu()
+        main_menu() #The game starts at the main menu by default
     if (start_game == False) and (display_high_score == True):
-        high_scores_screen()
+        high_scores_screen() #runs when the high score button is pressed
     if (start_game == False) and (display_instructions == True):
-        instructions_screen()
-    if start_game == True:
+        instructions_screen() #runs when instructions button is pressed
+    if start_game == True: #runs when "start" button is pressed
         game_loop()
